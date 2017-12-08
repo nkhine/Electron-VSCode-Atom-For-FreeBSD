@@ -572,8 +572,8 @@ index f7b2762..57224a9 100644
  
 diff --git a/electron.gyp b/electron.gyp
 index 96cb6b9..4d38b2e 100644
---- a/electron.gyp
-+++ b/electron.gyp
+--- a/electron.gyp	2017-12-08 09:54:03.042046000 +0400
++++ b/electron.gyp	2017-12-08 10:33:02.667531000 +0400
 @@ -174,9 +174,44 @@
            ],
          }, {
@@ -620,7 +620,7 @@ index 96cb6b9..4d38b2e 100644
          ['OS=="linux"', {
            'copies': [
              {
-@@ -333,6 +368,18 @@
+@@ -336,6 +371,28 @@
              'atom/common/crash_reporter/crash_reporter_mac.mm',
            ],
          }],  # OS=="mac" and mas_build==1
@@ -635,6 +635,16 @@ index 96cb6b9..4d38b2e 100644
 +            'atom/common/crash_reporter/linux/crash_dump_handler.cc',
 +            'atom/common/crash_reporter/linux/crash_dump_handler.h',
 +          ],
++          'link_settings': {
++            'ldflags': [
++              # Make binary search for libraries under current directory, so we
++              # don't have to manually set $LD_LIBRARY_PATH:
++              # http://serverfault.com/questions/279068/cant-find-so-in-the-same-directory-as-the-executable
++              '-rpath \$$ORIGIN',
++              # Make native module dynamic loading work.
++              '-rdynamic',
++            ],
++          },
 +        }],  # OS=="freebsd"  
          ['OS=="linux"', {
            'sources': [
